@@ -68,11 +68,13 @@ module Decidim
         return if text.blank?
 
         textarea = @fields.find { |field| field["type"] == "textarea" }
-        @errors = I18n.t(".invalid_xml", scope: "decidim.decidim_awesome.custom_fields.errors")
-        return unless textarea
+
+        unless textarea
+          @errors = I18n.t(".invalid_xml", scope: "decidim.decidim_awesome.custom_fields.errors")
+          return
+        end
 
         textarea["userData"] = [textarea["subtype"] == "textarea" ? text : xml]
-        @errors = I18n.t(".invalid_fields", scope: "decidim.decidim_awesome.custom_fields.errors", field: textarea["label"] || textarea["name"])
       end
 
       def translate_values!
